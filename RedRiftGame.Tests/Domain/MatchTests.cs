@@ -37,7 +37,7 @@ public class MatchTests
         var guestId = Guid.NewGuid().ToString();
         var guestName = "Маша";
         
-        match.Join(guestId, guestName);
+        match.Join(Player.Create(guestId, guestName));
         
         // assert
         match.Guest.Should().NotBeNull();
@@ -55,7 +55,7 @@ public class MatchTests
     {
         // arrange
         var match = Match.Create(Guid.NewGuid().ToString(), "Владимир");
-        match.Join(Guid.NewGuid().ToString(), "Маша");
+        match.Join(Player.Create(Guid.NewGuid().ToString(), "Маша"));
 
         // act
         match.NextTurn();
@@ -73,7 +73,7 @@ public class MatchTests
     {
         // arrange
         var match = Match.Create(Guid.NewGuid().ToString(), "Владимир");
-        match.Join(Guid.NewGuid().ToString(), "Маша");
+        match.Join(Player.Create(Guid.NewGuid().ToString(), "Маша"));
 
         // act
         while (!match.IsFinished) 
@@ -90,22 +90,31 @@ public class MatchTests
     }
 
     [Fact]
-    public void ShouldAllowToInterruptMatch()
+    public void ShouldNotAllowToInterruptRunningMatch()
     {
         // arrange
         var match = Match.Create(Guid.NewGuid().ToString(), "Владимир");
-        match.Join(Guid.NewGuid().ToString(), "Маша");
+        match.Join(Player.Create(Guid.NewGuid().ToString(), "Маша"));
         match.NextTurn();
         match.NextTurn();
+
+        // act && assert
+        Assert.Throws<Exception>(() => match.Interrupt());
+    }
+
+    [Fact]
+    public void ShouldAllowToInterruptCreatedMatch()
+    {
+        // arrange
+        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир");
 
         // act
         match.Interrupt();
 
         // assert
-        match.CurrentTurn.Should().Be(2);
+        match.CurrentTurn.Should().Be(0);
         match.MatchState.Should().Be(MatchState.Interrupted);
         match.IsFinished.Should().BeTrue();
         match.Host.Alive.Should().BeTrue();
-        match.Guest!.Alive.Should().BeTrue();
     }
 }

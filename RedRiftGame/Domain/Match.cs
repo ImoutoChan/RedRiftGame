@@ -25,12 +25,12 @@ public class Match
     public static Match Create(string hostConnectionId, string hostName) 
         => new(Guid.NewGuid(), Player.Create(hostConnectionId, hostName), MatchState.Created, null);
 
-    public void Join(string guestConnectionId, string guestName)
+    public void Join(Player guest)
     {
         if (MatchState != MatchState.Created)
             throw new Exception($"Match {Id} is in wrong state {MatchState}");
         
-        Guest = Player.Create(guestConnectionId, guestName);
+        Guest = guest;
 
         MatchState = MatchState.Running;
     }
@@ -54,9 +54,12 @@ public class Match
 
     public void Interrupt()
     {
+        if (MatchState != MatchState.Created)
+            throw new Exception($"Match {Id} is in wrong state {MatchState}");
+
         MatchState = MatchState.Interrupted;
     }
-    
+
     private void FinishMatch()
     {
         if (MatchState != MatchState.Running)
