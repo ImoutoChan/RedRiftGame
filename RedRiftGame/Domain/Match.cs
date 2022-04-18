@@ -16,18 +16,21 @@ public class Match
     
     public MatchState MatchState { get; private set; }
 
-    public Player? Guest { get; }
+    public Player? Guest { get; private set; }
+    
+    public int CurrentTurn { get; private set; }
 
-    public static Match Create(string playerConnectionId, string playerName) 
-        => new(Guid.NewGuid(), Player.Create(playerConnectionId, playerName), MatchState.Created, null);
+    public bool IsFinished => MatchState is MatchState.Finished or MatchState.Interrupted;
 
-    public void Start()
+    public static Match Create(string hostConnectionId, string hostName) 
+        => new(Guid.NewGuid(), Player.Create(hostConnectionId, hostName), MatchState.Created, null);
+
+    public void Join(string guestConnectionId, string guestName)
     {
-        if (Guest == null)
-            throw new Exception($"Guest for match {Id} is null");
-        
         if (MatchState != MatchState.Created)
             throw new Exception($"Match {Id} is in wrong state {MatchState}");
+        
+        Guest = Player.Create(guestConnectionId, guestName);
 
         MatchState = MatchState.Running;
     }
@@ -39,11 +42,13 @@ public class Match
         
         if (Guest == null)
             throw new Exception($"Guest for match {Id} is null");
+
+        CurrentTurn++;
         
         Host.TakeBullet();
         Guest.TakeBullet();
 
-        if (!Host.Alive || Guest.Alive)
+        if (!Host.Alive || !Guest.Alive)
             FinishMatch();
     }
 
@@ -51,7 +56,7 @@ public class Match
     {
         MatchState = MatchState.Interrupted;
     }
-
+    
     private void FinishMatch()
     {
         if (MatchState != MatchState.Running)
