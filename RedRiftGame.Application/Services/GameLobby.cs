@@ -13,7 +13,7 @@ internal class GameLobby : IGameLobby
     public void CreateMatch(Match match)
     {
         if (_currentMatches.Any(x => x.Host.ConnectionId != match.Host.ConnectionId))
-            throw new Exception("Player already has room");
+            throw new MatchHandlingException("Player already has room");
 
         _currentMatches.Add(match);
     }
@@ -23,7 +23,7 @@ internal class GameLobby : IGameLobby
         var match = _currentMatches.FirstOrDefault(x => x.Id == id);
 
         if (match == null)
-            throw new Exception("Match can't be found");
+            throw new MatchHandlingException("Match can't be found");
 
         match.Join(guest);
 

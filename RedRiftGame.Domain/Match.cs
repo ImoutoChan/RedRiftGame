@@ -31,7 +31,7 @@ public class Match
 
     public bool IsHostWinner => Host.Health > 0;
 
-    public Player GetGuest() => Guest ?? throw new Exception($"Guest for match {Id} is null");
+    public Player GetGuest() => Guest ?? throw new MatchHandlingException($"Guest for match {Id} is null");
     
     public static Match Create(string hostConnectionId, string hostName, Instant now)
         => new(Guid.NewGuid(), Player.Create(hostConnectionId, hostName), MatchState.Created, null, now);
@@ -39,7 +39,7 @@ public class Match
     public void Join(Player guest)
     {
         if (MatchState != MatchState.Created)
-            throw new Exception($"Match {Id} is in wrong state {MatchState}");
+            throw new MatchHandlingException($"Match {Id} is in wrong state {MatchState}");
 
         Guest = guest;
 
@@ -49,10 +49,10 @@ public class Match
     public void NextTurn(Instant now)
     {
         if (MatchState != MatchState.Running)
-            throw new Exception($"Match {Id} is in wrong state {MatchState}");
+            throw new MatchHandlingException($"Match {Id} is in wrong state {MatchState}");
 
         if (Guest == null)
-            throw new Exception($"Guest for match {Id} is null");
+            throw new MatchHandlingException($"Guest for match {Id} is null");
 
         CurrentTurn++;
 
@@ -66,16 +66,15 @@ public class Match
     public void Interrupt()
     {
         if (MatchState != MatchState.Created)
-            throw new Exception($"Match {Id} is in wrong state {MatchState}");
+            throw new MatchHandlingException($"Match {Id} is in wrong state {MatchState}");
 
         MatchState = MatchState.Interrupted;
     }
 
     private void FinishMatch(Instant now)
     {
-        // todo change exceptions to typed exceptions
         if (MatchState != MatchState.Running)
-            throw new Exception($"Match {Id} is in wrong state {MatchState}");
+            throw new MatchHandlingException($"Match {Id} is in wrong state {MatchState}");
 
         MatchState = MatchState.Finished;
 
