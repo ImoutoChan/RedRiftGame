@@ -13,21 +13,21 @@ public class IntegrationTests
     [Fact]
     public async Task GameShouldRun()
     {
-        var connection1 = await CreateHubConnection("Владимир");
-        var connection2 = await CreateHubConnection("Маша");
+        var connection1 = await CreateHubConnection("Елесей");
+        var connection2 = await CreateHubConnection("Саша");
 
-        await connection1.InvokeAsync("CreateMatch", "Владимир");
+        await connection1.InvokeAsync("CreateMatch", "Елесей");
         await Task.Delay(30000);
     }
     
     [Fact]
     public async Task GameShouldRunEvenAfterThirdPlayerAttemptsToJoin()
     {
-        var connection1 = await CreateHubConnection("Владимир");
-        var connection2 = await CreateHubConnection("Маша");
+        var connection1 = await CreateHubConnection("Елесей");
+        var connection2 = await CreateHubConnection("Саша");
         var connection3 = await CreateHubConnection("Дженерик");
 
-        await connection1.InvokeAsync("CreateMatch", "Владимир");
+        await connection1.InvokeAsync("CreateMatch", "Елесей");
         await Task.Delay(30000);
     }
 

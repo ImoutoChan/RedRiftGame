@@ -13,7 +13,7 @@ public class MatchTests
         // arrange
         var now = SystemClock.Instance.GetCurrentInstant();
         var hostId = Guid.NewGuid().ToString();
-        var hostName = "Владимир";
+        var hostName = "Елесей";
 
         // act
         var match = Match.Create(hostId, hostName, now);
@@ -34,11 +34,11 @@ public class MatchTests
     {
         // arrange
         var now = SystemClock.Instance.GetCurrentInstant();
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
+        var match = Match.Create(Guid.NewGuid().ToString(), "Елесей", now);
 
         // act
         var guestId = Guid.NewGuid().ToString();
-        var guestName = "Маша";
+        var guestName = "Саша";
 
         match.Join(Player.Create(guestId, guestName));
 
@@ -58,11 +58,11 @@ public class MatchTests
     {
         // arrange
         var now = SystemClock.Instance.GetCurrentInstant();
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
+        var match = Match.Create(Guid.NewGuid().ToString(), "Елесей", now);
 
         // act
         var guestId = Guid.NewGuid().ToString();
-        var guestName = "Маша";
+        var guestName = "Саша";
 
         match.Join(Player.Create(guestId, guestName));
         
@@ -75,8 +75,8 @@ public class MatchTests
     {
         // arrange
         var now = SystemClock.Instance.GetCurrentInstant();
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
-        match.Join(Player.Create(Guid.NewGuid().ToString(), "Маша"));
+        var match = Match.Create(Guid.NewGuid().ToString(), "Елесей", now);
+        match.Join(Player.Create(Guid.NewGuid().ToString(), "Саша"));
 
         // act
         match.NextTurn(now);
@@ -94,8 +94,8 @@ public class MatchTests
     {
         // arrange
         var now = SystemClock.Instance.GetCurrentInstant();
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
-        match.Join(Player.Create(Guid.NewGuid().ToString(), "Маша"));
+        var match = Match.Create(Guid.NewGuid().ToString(), "Елесей", now);
+        match.Join(Player.Create(Guid.NewGuid().ToString(), "Саша"));
 
         // act
         while (!match.IsFinished)
@@ -115,8 +115,8 @@ public class MatchTests
     {
         // arrange
         var now = SystemClock.Instance.GetCurrentInstant();
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
-        match.Join(Player.Create(Guid.NewGuid().ToString(), "Маша"));
+        var match = Match.Create(Guid.NewGuid().ToString(), "Елесей", now);
+        match.Join(Player.Create(Guid.NewGuid().ToString(), "Саша"));
         match.NextTurn(now);
         match.NextTurn(now);
 
@@ -129,7 +129,7 @@ public class MatchTests
     {
         // arrange
         var now = SystemClock.Instance.GetCurrentInstant();
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
+        var match = Match.Create(Guid.NewGuid().ToString(), "Елесей", now);
 
         // act
         match.Interrupt();
