@@ -1,6 +1,6 @@
 ﻿using RedRiftGame.Application.Services.Runner;
 
-namespace RedRiftGame;
+namespace RedRiftGame.Services;
 
 internal class GameLobbyRunnerHostedService : IHostedService
 {

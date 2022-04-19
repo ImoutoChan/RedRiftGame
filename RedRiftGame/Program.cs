@@ -1,12 +1,11 @@
-using RedRiftGame;
 using RedRiftGame.Application;
 using RedRiftGame.Application.Services;
 using RedRiftGame.DataAccess;
 using RedRiftGame.Hubs;
+using RedRiftGame.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
-var environment = builder.Environment;
 
 builder.Services
     .AddTransient<IMatchReporter, MatchReporter>()

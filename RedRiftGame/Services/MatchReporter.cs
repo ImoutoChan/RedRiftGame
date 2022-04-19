@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.SignalR;
 using RedRiftGame.Application.Services;
 using RedRiftGame.Domain;
+using RedRiftGame.Hubs;
 
-namespace RedRiftGame.Hubs;
+namespace RedRiftGame.Services;
 
 public class MatchReporter : IMatchReporter
 {
