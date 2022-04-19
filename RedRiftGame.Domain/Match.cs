@@ -56,11 +56,20 @@ public class Match
 
         CurrentTurn++;
 
-        Host.TakeBullet();
-        Guest.TakeBullet();
+        // We have to shuffle the players to ensure honest way of treating draws.
+        // We can use it only for the last turns for optimization, but I will leave it here for now.
+        var players = new[] { Host, Guest }.OrderBy(_ => Random.Shared.Next()).ToList();
 
-        if (!Host.Alive || !Guest.Alive)
-            FinishMatch(now);
+        foreach (var player in players)
+        {
+            player.TakeBullet();
+
+            if (!Host.Alive || !Guest.Alive)
+            {
+                FinishMatch(now);
+                break;
+            }
+        }
     }
 
     public void Interrupt()

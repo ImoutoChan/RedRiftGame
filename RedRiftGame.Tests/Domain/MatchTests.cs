@@ -8,7 +8,7 @@ namespace RedRiftGame.Tests.Domain;
 public class MatchTests
 {
     [Fact]
-    public void ShouldAllowCreateARoom()
+    public void ShouldAllowToCreateARoom()
     {
         // arrange
         var now = SystemClock.Instance.GetCurrentInstant();
@@ -30,7 +30,7 @@ public class MatchTests
     }
 
     [Fact]
-    public void ShouldAllowJoinGuestAfterCreation()
+    public void ShouldAllowToJoinGuestAfterCreation()
     {
         // arrange
         var now = SystemClock.Instance.GetCurrentInstant();
@@ -51,6 +51,23 @@ public class MatchTests
 
         match.MatchState.Should().Be(MatchState.Running);
         match.IsFinished.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ShouldNotAllowToJoinGuestAfterFirstJoin()
+    {
+        // arrange
+        var now = SystemClock.Instance.GetCurrentInstant();
+        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
+
+        // act
+        var guestId = Guid.NewGuid().ToString();
+        var guestName = "Маша";
+
+        match.Join(Player.Create(guestId, guestName));
+        
+        // assert
+        Assert.Throws<MatchHandlingException>(() => match.Join(Player.Create(guestId, guestName)));
     }
 
     [Fact]
@@ -90,7 +107,6 @@ public class MatchTests
         match.IsFinished.Should().BeTrue();
         (match.Host.Alive && match.Guest!.Alive).Should().BeFalse();
 
-        // todo fails on draw, but it shouldn't be possible, needs clarification
         (match.Host.Alive || match.Guest!.Alive).Should().BeTrue();
     }
 
@@ -105,7 +121,7 @@ public class MatchTests
         match.NextTurn(now);
 
         // act && assert
-        Assert.Throws<Exception>(() => match.Interrupt());
+        Assert.Throws<MatchHandlingException>(() => match.Interrupt());
     }
 
     [Fact]

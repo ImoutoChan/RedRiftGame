@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -9,10 +8,7 @@ public class IntegrationTests
 {
     private readonly ITestOutputHelper _output;
 
-    public IntegrationTests(ITestOutputHelper output)
-    {
-        _output = output;
-    }
+    public IntegrationTests(ITestOutputHelper output) => _output = output;
 
     [Fact]
     public async Task ShouldPlayGame()
