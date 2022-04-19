@@ -1,8 +1,8 @@
 ﻿using RedRiftGame.Domain;
 
-namespace RedRiftGame.Application;
+namespace RedRiftGame.Application.Services;
 
-public interface IGameLobby
+internal interface IGameLobby
 {
     IReadOnlyCollection<Match> CurrentMatches { get; }
     
@@ -11,4 +11,6 @@ public interface IGameLobby
     void JoinMatch(Guid id, Player guest);
     
     void InterruptMatch(string hostConnectionId);
+    
+    void RemoveMatches(IReadOnlyCollection<Guid> finishedMatchesIds);
 }

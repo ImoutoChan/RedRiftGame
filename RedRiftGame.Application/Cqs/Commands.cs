@@ -1,4 +1,4 @@
-﻿using RedRiftGame.Common;
+﻿using RedRiftGame.Common.Cqs;
 using RedRiftGame.Domain;
 
 namespace RedRiftGame.Application.Cqs;

@@ -1,5 +1,6 @@
 ﻿using MediatR;
-using RedRiftGame.Common;
+using RedRiftGame.Application.Services;
+using RedRiftGame.Common.Cqs;
 
 namespace RedRiftGame.Application.Cqs;
 

@@ -4,6 +4,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedRiftGame", "RedRiftGame\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedRiftGame.Tests", "RedRiftGame.Tests\RedRiftGame.Tests.csproj", "{47AC4D9F-BC88-4EC3-8514-C4D1A0C5A2F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedRiftGame.Domain", "RedRiftGame.Domain\RedRiftGame.Domain.csproj", "{4463C5D6-2801-4776-B459-A190F2CD08FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedRiftGame.Application", "RedRiftGame.Application\RedRiftGame.Application.csproj", "{2E49A9B8-5223-40D7-BB70-1C84F3A9A5DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedRiftGame.Common", "RedRiftGame.Common\RedRiftGame.Common.csproj", "{D8D552B5-E025-4B2C-99C7-C3E28ED5A471}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedRiftGame.Infrastructure.Persistence", "RedRiftGame.Infrastructure.Persistence\RedRiftGame.Infrastructure.Persistence.csproj", "{748495A8-451D-4330-9363-1387A99D6451}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +26,21 @@ Global
 		{47AC4D9F-BC88-4EC3-8514-C4D1A0C5A2F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47AC4D9F-BC88-4EC3-8514-C4D1A0C5A2F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47AC4D9F-BC88-4EC3-8514-C4D1A0C5A2F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4463C5D6-2801-4776-B459-A190F2CD08FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4463C5D6-2801-4776-B459-A190F2CD08FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4463C5D6-2801-4776-B459-A190F2CD08FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4463C5D6-2801-4776-B459-A190F2CD08FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E49A9B8-5223-40D7-BB70-1C84F3A9A5DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E49A9B8-5223-40D7-BB70-1C84F3A9A5DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E49A9B8-5223-40D7-BB70-1C84F3A9A5DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E49A9B8-5223-40D7-BB70-1C84F3A9A5DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8D552B5-E025-4B2C-99C7-C3E28ED5A471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8D552B5-E025-4B2C-99C7-C3E28ED5A471}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8D552B5-E025-4B2C-99C7-C3E28ED5A471}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8D552B5-E025-4B2C-99C7-C3E28ED5A471}.Release|Any CPU.Build.0 = Release|Any CPU
+		{748495A8-451D-4330-9363-1387A99D6451}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{748495A8-451D-4330-9363-1387A99D6451}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{748495A8-451D-4330-9363-1387A99D6451}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{748495A8-451D-4330-9363-1387A99D6451}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,5 +1,6 @@
 ﻿using MediatR;
-using RedRiftGame.Common;
+using RedRiftGame.Application.Services;
+using RedRiftGame.Common.Cqs;
 using RedRiftGame.Domain;
 
 namespace RedRiftGame.Application.Cqs;
@@ -12,9 +13,10 @@ internal class JoinRoomCommandHandler : ICommandHandler<JoinRoom>
 
     public Task<Unit> Handle(JoinRoom request, CancellationToken cancellationToken)
     {
-        var guestPlayer = Player.Create(request.ConnectionId, request.Name);
+        var (roomId, connectionId, name) = request;
         
-        _gameLobby.JoinMatch(request.RoomId, guestPlayer);
+        var guestPlayer = Player.Create(connectionId, name);
+        _gameLobby.JoinMatch(roomId, guestPlayer);
         
         return Task.FromResult(Unit.Value);
     }

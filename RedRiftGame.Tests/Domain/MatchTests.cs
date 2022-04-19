@@ -1,4 +1,5 @@
 using FluentAssertions;
+using NodaTime;
 using RedRiftGame.Domain;
 using Xunit;
 
@@ -10,11 +11,12 @@ public class MatchTests
     public void ShouldAllowCreateARoom()
     {
         // arrange
+        var now = SystemClock.Instance.GetCurrentInstant();
         var hostId = Guid.NewGuid().ToString();
         var hostName = "Владимир";
         
         // act
-        var match = Match.Create(hostId, hostName);
+        var match = Match.Create(hostId, hostName, now);
         
         // assert
         match.Host.ConnectionId.Should().Be(hostId);
@@ -31,7 +33,8 @@ public class MatchTests
     public void ShouldAllowJoinGuestAfterCreation()
     {
         // arrange
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир");
+        var now = SystemClock.Instance.GetCurrentInstant();
+        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
 
         // act
         var guestId = Guid.NewGuid().ToString();
@@ -54,11 +57,12 @@ public class MatchTests
     public void ShouldAllowToRunNextTurn()
     {
         // arrange
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир");
+        var now = SystemClock.Instance.GetCurrentInstant();
+        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
         match.Join(Player.Create(Guid.NewGuid().ToString(), "Маша"));
 
         // act
-        match.NextTurn();
+        match.NextTurn(now);
 
         // assert
         match.CurrentTurn.Should().Be(1);
@@ -72,12 +76,13 @@ public class MatchTests
     public void ShouldAllowToFinishMatch()
     {
         // arrange
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир");
+        var now = SystemClock.Instance.GetCurrentInstant();
+        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
         match.Join(Player.Create(Guid.NewGuid().ToString(), "Маша"));
 
         // act
         while (!match.IsFinished) 
-            match.NextTurn();
+            match.NextTurn(now);
 
         // assert
         match.CurrentTurn.Should().BeGreaterOrEqualTo(5);
@@ -93,10 +98,11 @@ public class MatchTests
     public void ShouldNotAllowToInterruptRunningMatch()
     {
         // arrange
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир");
+        var now = SystemClock.Instance.GetCurrentInstant();
+        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
         match.Join(Player.Create(Guid.NewGuid().ToString(), "Маша"));
-        match.NextTurn();
-        match.NextTurn();
+        match.NextTurn(now);
+        match.NextTurn(now);
 
         // act && assert
         Assert.Throws<Exception>(() => match.Interrupt());
@@ -106,7 +112,8 @@ public class MatchTests
     public void ShouldAllowToInterruptCreatedMatch()
     {
         // arrange
-        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир");
+        var now = SystemClock.Instance.GetCurrentInstant();
+        var match = Match.Create(Guid.NewGuid().ToString(), "Владимир", now);
 
         // act
         match.Interrupt();
