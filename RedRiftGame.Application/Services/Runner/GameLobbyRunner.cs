@@ -1,56 +1,47 @@
-﻿using System.Threading.Channels;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using NodaTime;
 using RedRiftGame.Application.Cqs;
-using RedRiftGame.Domain;
 
-namespace RedRiftGame.Application.Services;
+namespace RedRiftGame.Application.Services.Runner;
 
-// singleton
 internal class GameLobbyRunner : IGameLobbyRunner
 {
     private readonly IClock _clock;
     private readonly ILogger<GameLobbyRunner> _logger;
-    private readonly Channel<Match> _finishedMatches;
     private readonly IGameLobby _gameLobby;
     private readonly IMediator _mediator;
     private readonly PeriodicTimer _periodicTimer;
+    private readonly IFinishedMatchesPipe _finishedMatchesPipe;
 
-    public GameLobbyRunner(IGameLobby gameLobby, IMediator mediator, IClock clock, ILogger<GameLobbyRunner> logger)
+    public GameLobbyRunner(IGameLobby gameLobby, IMediator mediator, IClock clock, ILogger<GameLobbyRunner> logger, IFinishedMatchesPipe finishedMatchesPipe)
     {
         _gameLobby = gameLobby;
         _mediator = mediator;
         _clock = clock;
         _logger = logger;
+        _finishedMatchesPipe = finishedMatchesPipe;
         _periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(1));
-        _finishedMatches = Channel.CreateUnbounded<Match>();
     }
 
     public async Task RunMatchesAsync(CancellationToken ct)
     {
         while (await _periodicTimer.WaitForNextTickAsync(ct))
         {
-            var runningMatches = _gameLobby.CurrentMatches.Where(x => x.MatchState == MatchState.Running);
+            _gameLobby.RunMatches(_clock.GetCurrentInstant());
 
-            foreach (var runningMatch in runningMatches) 
-                runningMatch.NextTurn(_clock.GetCurrentInstant());
-
-            var finishedMatches = _gameLobby.CurrentMatches.Where(x => x.MatchState == MatchState.Finished).ToList();
-            var finishedMatchesIds = finishedMatches.Select(x => x.Id).ToHashSet();
-
-            _gameLobby.RemoveMatches(finishedMatchesIds);
+            var finishedMatches = _gameLobby.RemoveFinishedMatches();
 
             foreach (var finishedMatch in finishedMatches)
-                await _finishedMatches.Writer.WriteAsync(finishedMatch, ct);
+                await _finishedMatchesPipe.FinishedMatches.Writer.WriteAsync(finishedMatch, ct);
         }
     }
 
     public async Task ReportMatchesAsync(CancellationToken ct)
     {
-        while (await _finishedMatches.Reader.WaitToReadAsync(ct))
+        while (await _finishedMatchesPipe.FinishedMatches.Reader.WaitToReadAsync(ct))
         {
-            var match = await _finishedMatches.Reader.ReadAsync(ct);
+            var match = await _finishedMatchesPipe.FinishedMatches.Reader.ReadAsync(ct);
 
             try
             {

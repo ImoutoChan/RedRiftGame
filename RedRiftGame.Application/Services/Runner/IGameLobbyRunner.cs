@@ -1,4 +1,4 @@
-﻿namespace RedRiftGame.Application.Services;
+﻿namespace RedRiftGame.Application.Services.Runner;
 
 public interface IGameLobbyRunner
 {

@@ -1,4 +1,5 @@
-﻿using RedRiftGame.Domain;
+﻿using NodaTime;
+using RedRiftGame.Domain;
 
 namespace RedRiftGame.Application.Services;
 
@@ -9,11 +10,9 @@ internal class GameLobby : IGameLobby
 
     public GameLobby() => _currentMatches = new List<Match>();
 
-    public IReadOnlyCollection<Match> CurrentMatches => _currentMatches;
-
     public void CreateMatch(Match match)
     {
-        if (CurrentMatches.Any(x => x.Host.ConnectionId != match.Host.ConnectionId))
+        if (_currentMatches.Any(x => x.Host.ConnectionId != match.Host.ConnectionId))
             throw new Exception("Player already has room");
 
         _currentMatches.Add(match);
@@ -21,7 +20,7 @@ internal class GameLobby : IGameLobby
 
     public Match JoinMatch(Guid id, Player guest)
     {
-        var match = CurrentMatches.FirstOrDefault(x => x.Id == id);
+        var match = _currentMatches.FirstOrDefault(x => x.Id == id);
 
         if (match == null)
             throw new Exception("Match can't be found");
@@ -31,9 +30,25 @@ internal class GameLobby : IGameLobby
         return match;
     }
 
-    public void InterruptMatch(string hostConnectionId)
-        => CurrentMatches.FirstOrDefault(x => x.Host.ConnectionId == hostConnectionId)?.Interrupt();
+    public void RunMatches(Instant now)
+    {
+        var runningMatches = _currentMatches.Where(x => x.MatchState == MatchState.Running);
 
-    public void RemoveMatches(IReadOnlyCollection<Guid> finishedMatchesIds)
-        => _currentMatches.RemoveAll(x => finishedMatchesIds.Contains(x.Id));
+        foreach (var runningMatch in runningMatches) 
+            runningMatch.NextTurn(now);
+    }
+
+    public void InterruptMatch(string hostConnectionId)
+        => _currentMatches
+            .FirstOrDefault(x => x.Host.ConnectionId == hostConnectionId && x.MatchState == MatchState.Created)
+            ?.Interrupt();
+
+    public IReadOnlyCollection<Match> RemoveFinishedMatches()
+    {
+        var finishedMatches = _currentMatches.Where(x => x.MatchState == MatchState.Finished).ToList();
+        var finishedMatchesIds = finishedMatches.Select(x => x.Id).ToHashSet();
+        _currentMatches.RemoveAll(x => finishedMatchesIds.Contains(x.Id));
+
+        return finishedMatches;
+    }
 }
