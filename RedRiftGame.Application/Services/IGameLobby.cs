@@ -8,7 +8,7 @@ internal interface IGameLobby
 
     void CreateMatch(Match match);
 
-    void JoinMatch(Guid id, Player guest);
+    Match JoinMatch(Guid id, Player guest);
 
     void InterruptMatch(string hostConnectionId);
 

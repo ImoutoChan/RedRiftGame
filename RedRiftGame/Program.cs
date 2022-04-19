@@ -1,5 +1,6 @@
 using RedRiftGame;
 using RedRiftGame.Application;
+using RedRiftGame.Hubs;
 using RedRiftGame.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,18 +15,12 @@ builder.Services
 builder.Services.AddControllers();
 builder.Services
     .AddEndpointsApiExplorer()
-    .AddSwaggerGen();
+    .AddSignalR();
 
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.MapControllers();
+app.MapHub<GameLobbyHub>("/GameLobby");
 app.Run();

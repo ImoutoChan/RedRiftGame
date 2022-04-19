@@ -5,19 +5,19 @@ using RedRiftGame.Domain;
 
 namespace RedRiftGame.Application.Cqs;
 
-internal class JoinRoomCommandHandler : ICommandHandler<JoinRoom>
+internal class JoinRoomCommandHandler : ICommandHandler<JoinMatch, Match>
 {
     private readonly IGameLobby _gameLobby;
 
     public JoinRoomCommandHandler(IGameLobby gameLobby) => _gameLobby = gameLobby;
 
-    public Task<Unit> Handle(JoinRoom request, CancellationToken cancellationToken)
+    public Task<Match> Handle(JoinMatch request, CancellationToken cancellationToken)
     {
         var (roomId, connectionId, name) = request;
 
         var guestPlayer = Player.Create(connectionId, name);
-        _gameLobby.JoinMatch(roomId, guestPlayer);
+        var match = _gameLobby.JoinMatch(roomId, guestPlayer);
 
-        return Task.FromResult(Unit.Value);
+        return Task.FromResult(match);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Channels;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using NodaTime;
 using RedRiftGame.Application.Cqs;
 using RedRiftGame.Domain;
@@ -10,16 +11,18 @@ namespace RedRiftGame.Application.Services;
 internal class GameLobbyRunner : IGameLobbyRunner
 {
     private readonly IClock _clock;
+    private readonly ILogger<GameLobbyRunner> _logger;
     private readonly Channel<Match> _finishedMatches;
     private readonly IGameLobby _gameLobby;
     private readonly IMediator _mediator;
     private readonly PeriodicTimer _periodicTimer;
 
-    public GameLobbyRunner(IGameLobby gameLobby, IMediator mediator, IClock clock)
+    public GameLobbyRunner(IGameLobby gameLobby, IMediator mediator, IClock clock, ILogger<GameLobbyRunner> logger)
     {
         _gameLobby = gameLobby;
         _mediator = mediator;
         _clock = clock;
+        _logger = logger;
         _periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(1));
         _finishedMatches = Channel.CreateUnbounded<Match>();
     }
@@ -49,8 +52,15 @@ internal class GameLobbyRunner : IGameLobbyRunner
         {
             var match = await _finishedMatches.Reader.ReadAsync(ct);
 
-            await _mediator.Send(new ReportMatch(match), ct);
-            await _mediator.Send(new SaveMatch(match), ct);
+            try
+            {
+                await _mediator.Send(new ReportMatch(match), ct);
+                await _mediator.Send(new SaveMatch(match), ct);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Failed to report and match");
+            }
         }
     }
 }

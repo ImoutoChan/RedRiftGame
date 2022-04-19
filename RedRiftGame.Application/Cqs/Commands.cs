@@ -3,9 +3,9 @@ using RedRiftGame.Domain;
 
 namespace RedRiftGame.Application.Cqs;
 
-public record CreateRoom(string ConnectionId, string Name) : ICommand;
+public record CreateMatch(string ConnectionId, string Name) : ICommand<Guid>;
 
-public record JoinRoom(Guid RoomId, string ConnectionId, string Name) : ICommand;
+public record JoinMatch(Guid RoomId, string ConnectionId, string Name) : ICommand<Match>;
 
 public record InterruptMatch(string ConnectionId) : ICommand;
 

@@ -19,7 +19,7 @@ internal class GameLobby : IGameLobby
         _currentMatches.Add(match);
     }
 
-    public void JoinMatch(Guid id, Player guest)
+    public Match JoinMatch(Guid id, Player guest)
     {
         var match = CurrentMatches.FirstOrDefault(x => x.Id == id);
 
@@ -27,6 +27,8 @@ internal class GameLobby : IGameLobby
             throw new Exception("Match can't be found");
 
         match.Join(guest);
+
+        return match;
     }
 
     public void InterruptMatch(string hostConnectionId)

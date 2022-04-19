@@ -6,7 +6,7 @@ using RedRiftGame.Domain;
 
 namespace RedRiftGame.Application.Cqs;
 
-internal class CreateRoomCommandHandler : ICommandHandler<CreateRoom>
+internal class CreateRoomCommandHandler : ICommandHandler<CreateMatch, Guid>
 {
     private readonly IClock _clock;
     private readonly IGameLobby _gameLobby;
@@ -17,7 +17,7 @@ internal class CreateRoomCommandHandler : ICommandHandler<CreateRoom>
         _clock = clock;
     }
 
-    public Task<Unit> Handle(CreateRoom request, CancellationToken cancellationToken)
+    public Task<Guid> Handle(CreateMatch request, CancellationToken cancellationToken)
     {
         var (connectionId, name) = request;
         var now = _clock.GetCurrentInstant();
@@ -25,6 +25,6 @@ internal class CreateRoomCommandHandler : ICommandHandler<CreateRoom>
         var newMatch = Match.Create(connectionId, name, now);
         _gameLobby.CreateMatch(newMatch);
 
-        return Task.FromResult(Unit.Value);
+        return Task.FromResult(newMatch.Id);
     }
 }

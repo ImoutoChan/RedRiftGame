@@ -29,6 +29,10 @@ public class Match
 
     public bool IsFinished => MatchState is MatchState.Finished or MatchState.Interrupted;
 
+    public bool IsHostWinner => Host.Health > 0;
+
+    public Player GetGuest() => Guest ?? throw new Exception($"Guest for match {Id} is null");
+    
     public static Match Create(string hostConnectionId, string hostName, Instant now)
         => new(Guid.NewGuid(), Player.Create(hostConnectionId, hostName), MatchState.Created, null, now);
 
@@ -69,6 +73,7 @@ public class Match
 
     private void FinishMatch(Instant now)
     {
+        // todo change exceptions to typed exceptions
         if (MatchState != MatchState.Running)
             throw new Exception($"Match {Id} is in wrong state {MatchState}");
 

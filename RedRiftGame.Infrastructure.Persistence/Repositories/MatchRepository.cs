@@ -17,9 +17,9 @@ internal class MatchRepository : IMatchRepository
         {
             Id = match.Id,
             HostName = match.Host.Name,
-            GuestName = match.Guest!.Name,
+            GuestName = match.GetGuest().Name,
             HostFinalHealth = match.Host.Health,
-            GuestFinalHealth = match.Guest!.Health,
+            GuestFinalHealth = match.GetGuest().Health,
             TotalTurnsPlayed = match.CurrentTurn,
             FinishedAt = match.FinishedAt!.Value
         });
