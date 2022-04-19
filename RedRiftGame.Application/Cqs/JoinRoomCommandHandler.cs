@@ -14,10 +14,10 @@ internal class JoinRoomCommandHandler : ICommandHandler<JoinRoom>
     public Task<Unit> Handle(JoinRoom request, CancellationToken cancellationToken)
     {
         var (roomId, connectionId, name) = request;
-        
+
         var guestPlayer = Player.Create(connectionId, name);
         _gameLobby.JoinMatch(roomId, guestPlayer);
-        
+
         return Task.FromResult(Unit.Value);
     }
 }

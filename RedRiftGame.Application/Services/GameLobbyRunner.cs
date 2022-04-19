@@ -9,11 +9,11 @@ namespace RedRiftGame.Application.Services;
 // singleton
 internal class GameLobbyRunner : IGameLobbyRunner
 {
-    private readonly IGameLobby _gameLobby;
-    private readonly PeriodicTimer _periodicTimer;
-    private readonly IMediator _mediator;
     private readonly IClock _clock;
     private readonly Channel<Match> _finishedMatches;
+    private readonly IGameLobby _gameLobby;
+    private readonly IMediator _mediator;
+    private readonly PeriodicTimer _periodicTimer;
 
     public GameLobbyRunner(IGameLobby gameLobby, IMediator mediator, IClock clock)
     {
@@ -30,21 +30,19 @@ internal class GameLobbyRunner : IGameLobbyRunner
         {
             var runningMatches = _gameLobby.CurrentMatches.Where(x => x.MatchState == MatchState.Running);
 
-            foreach (var runningMatch in runningMatches)
-            {
+            foreach (var runningMatch in runningMatches) 
                 runningMatch.NextTurn(_clock.GetCurrentInstant());
-            }
 
             var finishedMatches = _gameLobby.CurrentMatches.Where(x => x.MatchState == MatchState.Finished).ToList();
             var finishedMatchesIds = finishedMatches.Select(x => x.Id).ToHashSet();
 
             _gameLobby.RemoveMatches(finishedMatchesIds);
 
-            foreach (var finishedMatch in finishedMatches) 
+            foreach (var finishedMatch in finishedMatches)
                 await _finishedMatches.Writer.WriteAsync(finishedMatch, ct);
         }
     }
-    
+
     public async Task ReportMatchesAsync(CancellationToken ct)
     {
         while (await _finishedMatches.Reader.WaitToReadAsync(ct))

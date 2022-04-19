@@ -14,10 +14,10 @@ public class MatchTests
         var now = SystemClock.Instance.GetCurrentInstant();
         var hostId = Guid.NewGuid().ToString();
         var hostName = "Владимир";
-        
+
         // act
         var match = Match.Create(hostId, hostName, now);
-        
+
         // assert
         match.Host.ConnectionId.Should().Be(hostId);
         match.Host.Name.Should().Be(hostName);
@@ -39,9 +39,9 @@ public class MatchTests
         // act
         var guestId = Guid.NewGuid().ToString();
         var guestName = "Маша";
-        
+
         match.Join(Player.Create(guestId, guestName));
-        
+
         // assert
         match.Guest.Should().NotBeNull();
         match.Guest!.ConnectionId.Should().Be(guestId);
@@ -81,7 +81,7 @@ public class MatchTests
         match.Join(Player.Create(Guid.NewGuid().ToString(), "Маша"));
 
         // act
-        while (!match.IsFinished) 
+        while (!match.IsFinished)
             match.NextTurn(now);
 
         // assert
@@ -89,7 +89,7 @@ public class MatchTests
         match.MatchState.Should().Be(MatchState.Finished);
         match.IsFinished.Should().BeTrue();
         (match.Host.Alive && match.Guest!.Alive).Should().BeFalse();
-        
+
         // todo fails on draw, but it shouldn't be possible, needs clarification
         (match.Host.Alive || match.Guest!.Alive).Should().BeTrue();
     }

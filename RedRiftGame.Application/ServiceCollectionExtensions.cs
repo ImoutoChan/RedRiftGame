@@ -12,9 +12,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IGameLobby, GameLobby>();
         services.AddSingleton<IGameLobbyRunner, GameLobbyRunner>();
         services.AddTransient<IClock, SystemClock>();
-        
+
         services.AddMediatR(typeof(ServiceCollectionExtensions).Assembly);
-        
+
         return services;
     }
 }

@@ -6,7 +6,7 @@ namespace RedRiftGame.Application.Services;
 internal class GameLobby : IGameLobby
 {
     private readonly List<Match> _currentMatches;
-    
+
     public GameLobby() => _currentMatches = new List<Match>();
 
     public IReadOnlyCollection<Match> CurrentMatches => _currentMatches;
@@ -15,23 +15,23 @@ internal class GameLobby : IGameLobby
     {
         if (CurrentMatches.Any(x => x.Host.ConnectionId != match.Host.ConnectionId))
             throw new Exception("Player already has room");
-        
+
         _currentMatches.Add(match);
     }
 
     public void JoinMatch(Guid id, Player guest)
     {
         var match = CurrentMatches.FirstOrDefault(x => x.Id == id);
-        
+
         if (match == null)
             throw new Exception("Match can't be found");
-        
+
         match.Join(guest);
     }
 
-    public void InterruptMatch(string hostConnectionId) 
+    public void InterruptMatch(string hostConnectionId)
         => CurrentMatches.FirstOrDefault(x => x.Host.ConnectionId == hostConnectionId)?.Interrupt();
 
-    public void RemoveMatches(IReadOnlyCollection<Guid> finishedMatchesIds) 
+    public void RemoveMatches(IReadOnlyCollection<Guid> finishedMatchesIds)
         => _currentMatches.RemoveAll(x => finishedMatchesIds.Contains(x.Id));
 }

@@ -10,15 +10,15 @@ internal class MatchEntity
 
     [Required]
     public string HostName { get; set; } = default!;
-    
+
     [Required]
     public string GuestName { get; set; } = default!;
-    
+
     public int HostFinalHealth { get; set; }
-    
+
     public int GuestFinalHealth { get; set; }
-    
+
     public int TotalTurnsPlayed { get; set; }
-    
+
     public Instant FinishedAt { get; set; }
 }

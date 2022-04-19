@@ -8,8 +8,8 @@ namespace RedRiftGame.Application.Cqs;
 
 internal class CreateRoomCommandHandler : ICommandHandler<CreateRoom>
 {
-    private readonly IGameLobby _gameLobby;
     private readonly IClock _clock;
+    private readonly IGameLobby _gameLobby;
 
     public CreateRoomCommandHandler(IGameLobby gameLobby, IClock clock)
     {
@@ -21,10 +21,10 @@ internal class CreateRoomCommandHandler : ICommandHandler<CreateRoom>
     {
         var (connectionId, name) = request;
         var now = _clock.GetCurrentInstant();
-        
+
         var newMatch = Match.Create(connectionId, name, now);
         _gameLobby.CreateMatch(newMatch);
-        
+
         return Task.FromResult(Unit.Value);
     }
 }

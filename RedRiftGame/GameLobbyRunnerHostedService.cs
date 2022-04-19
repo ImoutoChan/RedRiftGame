@@ -4,9 +4,9 @@ namespace RedRiftGame;
 
 internal class GameLobbyRunnerHostedService : IHostedService
 {
+    private readonly CancellationTokenSource _cts;
     private readonly IGameLobbyRunner _gameLobbyRunner;
     private readonly IServiceScope _scope;
-    private readonly CancellationTokenSource _cts;
 
     public GameLobbyRunnerHostedService(IServiceProvider serviceProvider)
     {
@@ -19,7 +19,7 @@ internal class GameLobbyRunnerHostedService : IHostedService
     {
         Task.Run(async () => await _gameLobbyRunner.RunMatchesAsync(_cts.Token), cancellationToken);
         Task.Run(async () => await _gameLobbyRunner.ReportMatchesAsync(_cts.Token), cancellationToken);
-        
+
         return Task.FromResult(Task.CompletedTask);
     }
 
@@ -27,7 +27,7 @@ internal class GameLobbyRunnerHostedService : IHostedService
     {
         _cts.Cancel();
         _scope.Dispose();
-        
+
         return Task.CompletedTask;
     }
 }

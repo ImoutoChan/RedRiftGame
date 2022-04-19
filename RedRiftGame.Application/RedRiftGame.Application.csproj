@@ -8,12 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RedRiftGame.Common\RedRiftGame.Common.csproj" />
-      <ProjectReference Include="..\RedRiftGame.Domain\RedRiftGame.Domain.csproj" />
+        <ProjectReference Include="..\RedRiftGame.Common\RedRiftGame.Common.csproj"/>
+        <ProjectReference Include="..\RedRiftGame.Domain\RedRiftGame.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

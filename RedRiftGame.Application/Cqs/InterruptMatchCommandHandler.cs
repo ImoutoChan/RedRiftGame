@@ -13,7 +13,7 @@ internal class InterruptMatchCommandHandler : ICommandHandler<InterruptMatch>
     public Task<Unit> Handle(InterruptMatch request, CancellationToken cancellationToken)
     {
         _gameLobby.InterruptMatch(request.ConnectionId);
-        
+
         return Task.FromResult(Unit.Value);
     }
 }

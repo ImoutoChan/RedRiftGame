@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
             => builder.UseNpgsql(configuration.GetConnectionString("RedRiftGameDatabase"), x => x.UseNodaTime()));
 
         services.AddTransient<IMatchRepository, MatchRepository>();
-        
+
         return services;
     }
 }
