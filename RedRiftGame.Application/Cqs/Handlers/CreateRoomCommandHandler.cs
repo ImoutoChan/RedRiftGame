@@ -1,10 +1,9 @@
-﻿using MediatR;
-using NodaTime;
+﻿using NodaTime;
 using RedRiftGame.Application.Services;
 using RedRiftGame.Common.Cqs;
 using RedRiftGame.Domain;
 
-namespace RedRiftGame.Application.Cqs;
+namespace RedRiftGame.Application.Cqs.Handlers;
 
 internal class CreateRoomCommandHandler : ICommandHandler<CreateMatch, Guid>
 {

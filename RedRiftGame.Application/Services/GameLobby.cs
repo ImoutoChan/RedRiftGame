@@ -38,18 +38,22 @@ internal class GameLobby : IGameLobby
     }
 
     public void InterruptMatch(string hostConnectionId)
-        => _currentMatches
-            .FirstOrDefault(x => x.Value.Host.ConnectionId == hostConnectionId 
+    {
+        _currentMatches
+            .FirstOrDefault(x => x.Value.Host.ConnectionId == hostConnectionId
                                  && x.Value.MatchState == MatchState.Created)
             .Value?.Interrupt();
 
+        RemoveFinishedMatches();
+    }
+
     public IReadOnlyCollection<Match> RemoveFinishedMatches()
     {
-        var finishedMatches = _currentMatches.Where(x => x.Value.MatchState == MatchState.Finished).ToList();
+        var finishedMatches = _currentMatches.Where(x => x.Value.IsFinished).ToList();
 
         foreach (var finishedMatch in finishedMatches) 
             _currentMatches.TryRemove(finishedMatch.Key, out _);
 
-        return finishedMatches.Select(x => x.Value).ToList();
+        return finishedMatches.Select(x => x.Value).Where(x => x.MatchState == MatchState.Finished).ToList();
     }
 }

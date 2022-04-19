@@ -2,7 +2,7 @@
 using RedRiftGame.Application.Services;
 using RedRiftGame.Common.Cqs;
 
-namespace RedRiftGame.Application.Cqs;
+namespace RedRiftGame.Application.Cqs.Handlers;
 
 internal class InterruptMatchCommandHandler : ICommandHandler<InterruptMatch>
 {

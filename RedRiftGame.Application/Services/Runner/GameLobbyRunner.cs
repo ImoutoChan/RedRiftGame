@@ -14,7 +14,12 @@ internal class GameLobbyRunner : IGameLobbyRunner
     private readonly PeriodicTimer _periodicTimer;
     private readonly IFinishedMatchesPipe _finishedMatchesPipe;
 
-    public GameLobbyRunner(IGameLobby gameLobby, IMediator mediator, IClock clock, ILogger<GameLobbyRunner> logger, IFinishedMatchesPipe finishedMatchesPipe)
+    public GameLobbyRunner(
+        IGameLobby gameLobby,
+        IMediator mediator,
+        IClock clock,
+        ILogger<GameLobbyRunner> logger,
+        IFinishedMatchesPipe finishedMatchesPipe)
     {
         _gameLobby = gameLobby;
         _mediator = mediator;
@@ -50,7 +55,7 @@ internal class GameLobbyRunner : IGameLobbyRunner
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Failed to report and match");
+                _logger.LogError(e, "Failed to report and save");
             }
         }
     }

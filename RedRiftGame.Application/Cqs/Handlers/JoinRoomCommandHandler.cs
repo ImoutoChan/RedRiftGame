@@ -1,9 +1,8 @@
-﻿using MediatR;
-using RedRiftGame.Application.Services;
+﻿using RedRiftGame.Application.Services;
 using RedRiftGame.Common.Cqs;
 using RedRiftGame.Domain;
 
-namespace RedRiftGame.Application.Cqs;
+namespace RedRiftGame.Application.Cqs.Handlers;
 
 internal class JoinRoomCommandHandler : ICommandHandler<JoinMatch, Match>
 {

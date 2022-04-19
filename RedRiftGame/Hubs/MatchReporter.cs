@@ -8,11 +8,8 @@ public class MatchReporter : IMatchReporter
 {
     private readonly IHubContext<GameLobbyHub, IGameLobbyHubClient> _hubContext;
 
-    public MatchReporter(IHubContext<GameLobbyHub, IGameLobbyHubClient> hubContext)
-    {
-        _hubContext = hubContext;
-    }
-    
+    public MatchReporter(IHubContext<GameLobbyHub, IGameLobbyHubClient> hubContext) => _hubContext = hubContext;
+
     public async Task ReportAsync(Match match)
     {
         var host = match.Host;
