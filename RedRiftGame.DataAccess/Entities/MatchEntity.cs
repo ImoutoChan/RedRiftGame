@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using NodaTime;
 
-namespace RedRiftGame.Infrastructure.Persistence.Entities;
+namespace RedRiftGame.DataAccess.Entities;
 
 internal class MatchEntity
 {

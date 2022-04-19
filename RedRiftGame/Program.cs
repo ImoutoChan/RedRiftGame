@@ -1,8 +1,8 @@
 using RedRiftGame;
 using RedRiftGame.Application;
 using RedRiftGame.Application.Services;
+using RedRiftGame.DataAccess;
 using RedRiftGame.Hubs;
-using RedRiftGame.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;

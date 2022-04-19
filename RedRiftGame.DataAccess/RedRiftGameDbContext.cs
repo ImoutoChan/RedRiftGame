@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RedRiftGame.Infrastructure.Persistence.Entities;
+using RedRiftGame.DataAccess.Entities;
 
-namespace RedRiftGame.Infrastructure.Persistence;
+namespace RedRiftGame.DataAccess;
 
 internal class RedRiftGameDbContext : DbContext
 {

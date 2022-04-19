@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RedRiftGame.Application.Services;
-using RedRiftGame.Infrastructure.Persistence.Repositories;
+using RedRiftGame.DataAccess.Repositories;
 
-namespace RedRiftGame.Infrastructure.Persistence;
+namespace RedRiftGame.DataAccess;
 
 public static class ServiceCollectionExtensions
 {

@@ -1,8 +1,8 @@
 ﻿using RedRiftGame.Application.Services;
+using RedRiftGame.DataAccess.Entities;
 using RedRiftGame.Domain;
-using RedRiftGame.Infrastructure.Persistence.Entities;
 
-namespace RedRiftGame.Infrastructure.Persistence.Repositories;
+namespace RedRiftGame.DataAccess.Repositories;
 
 internal class MatchRepository : IMatchRepository
 {

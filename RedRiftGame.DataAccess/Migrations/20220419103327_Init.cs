@@ -1,10 +1,9 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 using NodaTime;
 
-#nullable disable
-
-namespace RedRiftGame.Infrastructure.Persistence.Migrations
+namespace RedRiftGame.DataAccess.Migrations
 {
     public partial class Init : Migration
     {

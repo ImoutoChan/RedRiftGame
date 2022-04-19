@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedRiftGame.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedRiftGame.Common", "RedRiftGame.Common\RedRiftGame.Common.csproj", "{D8D552B5-E025-4B2C-99C7-C3E28ED5A471}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedRiftGame.Infrastructure.Persistence", "RedRiftGame.Infrastructure.Persistence\RedRiftGame.Infrastructure.Persistence.csproj", "{748495A8-451D-4330-9363-1387A99D6451}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedRiftGame.DataAccess", "RedRiftGame.DataAccess\RedRiftGame.DataAccess.csproj", "{748495A8-451D-4330-9363-1387A99D6451}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

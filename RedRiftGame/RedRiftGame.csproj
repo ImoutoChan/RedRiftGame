@@ -18,7 +18,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\RedRiftGame.Application\RedRiftGame.Application.csproj" />
-        <ProjectReference Include="..\RedRiftGame.Infrastructure.Persistence\RedRiftGame.Infrastructure.Persistence.csproj" />
+        <ProjectReference Include="..\RedRiftGame.DataAccess\RedRiftGame.DataAccess.csproj" />
     </ItemGroup>
 
 </Project>
