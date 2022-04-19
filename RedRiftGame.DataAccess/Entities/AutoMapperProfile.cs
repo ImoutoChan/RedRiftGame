@@ -13,9 +13,11 @@ internal class AutoMapperProfile : Profile
                 Id = match.Id,
                 HostName = match.Host.Name,
                 GuestName = match.GetGuest().Name,
+                IsHostWinner = match.IsHostWinner,
                 HostFinalHealth = match.Host.Health,
                 GuestFinalHealth = match.GetGuest().Health,
                 TotalTurnsPlayed = match.CurrentTurn,
+                StartedAt = match.CreatedAt,
                 FinishedAt = match.FinishedAt!.Value
             });
     }

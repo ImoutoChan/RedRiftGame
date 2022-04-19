@@ -11,16 +11,27 @@ public class IntegrationTests
     public IntegrationTests(ITestOutputHelper output) => _output = output;
 
     [Fact]
-    public async Task ShouldPlayGame()
+    public async Task GameShouldRun()
     {
-        var connection1 = await CreateHubConnection(1);
-        var connection2 = await CreateHubConnection(2);
+        var connection1 = await CreateHubConnection("Владимир");
+        var connection2 = await CreateHubConnection("Маша");
 
-        await connection1.SendAsync("CreateMatch", "Владимир");
+        await connection1.InvokeAsync("CreateMatch", "Владимир");
+        await Task.Delay(30000);
+    }
+    
+    [Fact]
+    public async Task GameShouldRunEvenAfterThirdPlayerAttemptsToJoin()
+    {
+        var connection1 = await CreateHubConnection("Владимир");
+        var connection2 = await CreateHubConnection("Маша");
+        var connection3 = await CreateHubConnection("Дженерик");
+
+        await connection1.InvokeAsync("CreateMatch", "Владимир");
         await Task.Delay(30000);
     }
 
-    private async Task<HubConnection> CreateHubConnection(int number)
+    private async Task<HubConnection> CreateHubConnection(string clientName)
     {
         var connection = new HubConnectionBuilder()
             .WithUrl("http://localhost:11311/GameLobby")
@@ -29,19 +40,36 @@ public class IntegrationTests
 
         connection.On<Guid, string>("ProcessNewMatch", (matchId, hostName) =>
         {
-            _output.WriteLine($"{number} New match created: {matchId} by {hostName}");
+            var id = matchId.ToString()[..4];
             
-            connection.SendAsync("JoinMatch", matchId, "Маша");
+            _output.WriteLine($"{clientName} New match created: {id} by {hostName}");
+            try
+            {
+                connection.InvokeAsync("JoinMatch", matchId, clientName).GetAwaiter().GetResult();
+            }
+            catch (Exception e)
+            {
+                _output.WriteLine($"{clientName} Unable to join: {e.Message}");
+            }
         });
 
         connection.On<Guid, string, string>("ProcessGameStarted", (matchId, hostName, guestName) =>
         {
-            _output.WriteLine($"{number} Game started: {matchId} by {hostName} and {guestName}");
+            var id = matchId.ToString()[..4];
+            
+            _output.WriteLine($"{clientName} Game started: {id} by {hostName} and {guestName}");
         });
 
-        connection.On<Guid, string, string, int, int, bool>("ProcessGameFinished", 
+        connection.On<Guid, string, string, int, int, bool>("ProcessGameFinished",
             (matchId, hostName, guestName, hostHp, guestHp, isHostWinner)
-                => _output.WriteLine($"{number} Game finished: {matchId} by {hostName} and {guestName} with {hostHp} and {guestHp} hp left. " + $"{(isHostWinner ? "Host won" : "Guest won")}"));
+                =>
+            {
+                var id = matchId.ToString()[..4];
+                _output.WriteLine(
+                    $"{clientName} Game finished: {id} by {hostName} and {guestName} " +
+                    $"with {hostHp} and {guestHp} hp left. " +
+                    $"{(isHostWinner ? "Host won" : "Guest won")}");
+            });
 
         await connection.StartAsync();
         return connection;

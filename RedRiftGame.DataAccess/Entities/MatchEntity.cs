@@ -13,6 +13,8 @@ internal class MatchEntity
 
     [Required]
     public string GuestName { get; set; } = default!;
+    
+    public bool IsHostWinner { get; set; }
 
     public int HostFinalHealth { get; set; }
 
@@ -20,5 +22,7 @@ internal class MatchEntity
 
     public int TotalTurnsPlayed { get; set; }
 
+    public Instant StartedAt { get; set; }
+    
     public Instant FinishedAt { get; set; }
 }
