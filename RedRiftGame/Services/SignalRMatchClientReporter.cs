@@ -5,11 +5,12 @@ using RedRiftGame.Hubs;
 
 namespace RedRiftGame.Services;
 
-public class MatchReporter : IMatchReporter
+public class SignalRMatchClientReporter : IMatchClientReporter
 {
     private readonly IHubContext<GameLobbyHub, IGameLobbyHubClient> _hubContext;
 
-    public MatchReporter(IHubContext<GameLobbyHub, IGameLobbyHubClient> hubContext) => _hubContext = hubContext;
+    public SignalRMatchClientReporter(IHubContext<GameLobbyHub, IGameLobbyHubClient> hubContext)
+        => _hubContext = hubContext;
 
     public async Task ReportAsync(Match match)
     {

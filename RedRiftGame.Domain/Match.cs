@@ -39,7 +39,11 @@ public class Match
     public void Join(Player guest)
     {
         if (MatchState != MatchState.Created)
-            throw new MatchHandlingException($"Match {Id} is in wrong state {MatchState}");
+            throw new MatchHandlingException($"You can't join already started match {Id}");
+        
+        if (guest.ConnectionId == Host.ConnectionId)
+            throw new MatchHandlingException($"You can't join your own match {Id}");
+        
 
         Guest = guest;
 
@@ -49,10 +53,10 @@ public class Match
     public void NextTurn(Instant now)
     {
         if (MatchState != MatchState.Running)
-            throw new MatchHandlingException($"Match {Id} is in wrong state {MatchState}");
+            throw new MatchHandlingException($"Match isn't running anymore {Id}");
 
         if (Guest == null)
-            throw new MatchHandlingException($"Guest for match {Id} is null");
+            throw new MatchHandlingException($"No second player to run this match {Id}");
 
         CurrentTurn++;
 
@@ -75,7 +79,7 @@ public class Match
     public void Interrupt()
     {
         if (MatchState != MatchState.Created)
-            throw new MatchHandlingException($"Match {Id} is in wrong state {MatchState}");
+            throw new MatchHandlingException($"You can't interrupt already started match {Id}");
 
         MatchState = MatchState.Interrupted;
     }
@@ -83,7 +87,7 @@ public class Match
     private void FinishMatch(Instant now)
     {
         if (MatchState != MatchState.Running)
-            throw new MatchHandlingException($"Match {Id} is in wrong state {MatchState}");
+            throw new MatchHandlingException($"You can't finish not running match {Id}");
 
         MatchState = MatchState.Finished;
 

@@ -8,11 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services
-    .AddTransient<IMatchReporter, MatchReporter>()
-    .AddHostedService<GameLobbyRunnerHostedService>()
+    .AddTransient<IMatchClientReporter, SignalRMatchClientReporter>()
+    .AddHostedService<MatchRunnerHostedService>()
+    .AddHostedService<MatchReporterHostedService>()
     .AddApplication()
     .AddPersistence(configuration)
-    .AddSignalR();
+    .AddSignalR(x => x.EnableDetailedErrors = true);
 
 var app = builder.Build();
 app.MapHub<GameLobbyHub>("/GameLobby");

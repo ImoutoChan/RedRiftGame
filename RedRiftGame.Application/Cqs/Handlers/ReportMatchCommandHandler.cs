@@ -6,16 +6,16 @@ namespace RedRiftGame.Application.Cqs.Handlers;
 
 internal class ReportMatchCommandHandler : ICommandHandler<ReportMatch>
 {
-    private readonly IMatchReporter _matchReporter;
+    private readonly IMatchClientReporter _matchClientReporter;
 
-    public ReportMatchCommandHandler(IMatchReporter matchReporter)
+    public ReportMatchCommandHandler(IMatchClientReporter matchClientReporter)
     {
-        _matchReporter = matchReporter;
+        _matchClientReporter = matchClientReporter;
     }
 
     public async Task<Unit> Handle(ReportMatch request, CancellationToken cancellationToken)
     {
-        await _matchReporter.ReportAsync(request.Match);
+        await _matchClientReporter.ReportAsync(request.Match);
 
         return Unit.Value;
     }

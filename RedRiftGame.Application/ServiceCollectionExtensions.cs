@@ -13,7 +13,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IGameLobby, GameLobby>();
         services.AddSingleton<IFinishedMatchesPipe, FinishedMatchesPipe>();
         
-        services.AddTransient<IGameLobbyRunner, GameLobbyRunner>();
+        services.AddTransient<IMatchRunner, MatchRunner>();
+        services.AddTransient<IMatchReporter, MatchReporter>();
         services.AddTransient<IClock>(_ => SystemClock.Instance);
 
         services.AddMediatR(typeof(ServiceCollectionExtensions).Assembly);
