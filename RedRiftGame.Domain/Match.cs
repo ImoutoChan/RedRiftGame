@@ -44,7 +44,6 @@ public class Match
         if (guest.ConnectionId == Host.ConnectionId)
             throw new MatchHandlingException($"You can't join your own match {Id}");
         
-
         Guest = guest;
 
         MatchState = MatchState.Running;
