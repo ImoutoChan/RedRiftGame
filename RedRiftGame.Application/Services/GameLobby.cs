@@ -13,7 +13,7 @@ internal class GameLobby : IGameLobby
 
     public void CreateMatch(Match match)
     {
-        if (_currentMatches.Any(x => x.Value.Host.ConnectionId != match.Host.ConnectionId))
+        if (_currentMatches.Any(x => x.Value.Host.ConnectionId == match.Host.ConnectionId))
             throw new MatchHandlingException("Player already has room");
 
         _currentMatches.TryAdd(match.Id, match);
@@ -24,7 +24,8 @@ internal class GameLobby : IGameLobby
         if (!_currentMatches.TryGetValue(id, out var match))
             throw new MatchHandlingException("Match can't be found");
 
-        match.Join(guest);
+        lock (match)
+            match.Join(guest);
 
         return match;
     }
@@ -33,16 +34,22 @@ internal class GameLobby : IGameLobby
     {
         var runningMatches = _currentMatches.Where(x => x.Value.MatchState == MatchState.Running);
 
-        foreach (var runningMatch in runningMatches) 
+        foreach (var runningMatch in runningMatches)
             runningMatch.Value.NextTurn(now);
     }
 
     public void InterruptMatch(string hostConnectionId)
     {
-        _currentMatches
+        var match = _currentMatches
             .FirstOrDefault(x => x.Value.Host.ConnectionId == hostConnectionId
                                  && x.Value.MatchState == MatchState.Created)
-            .Value?.Interrupt();
+            .Value;
+
+        if (match == null) 
+            return;
+        
+        lock (match)
+            match.Interrupt();
 
         RemoveFinishedMatches();
     }

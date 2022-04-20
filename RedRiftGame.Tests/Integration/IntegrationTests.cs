@@ -30,6 +30,19 @@ public class IntegrationTests
         await connection1.InvokeAsync("CreateMatch", "Елесей");
         await Task.Delay(30000);
     }
+    
+    [Fact]
+    public async Task TwoParallelGamesShouldRun()
+    {
+        var connection1 = await CreateHubConnection("Елесей");
+        var connection2 = await CreateHubConnection("Саша");
+        var connection3 = await CreateHubConnection("Дженерик");
+        var connection4 = await CreateHubConnection("Мышь");
+
+        await connection1.InvokeAsync("CreateMatch", "Елесей");
+        await connection4.InvokeAsync("CreateMatch", "Мышь");
+        await Task.Delay(30000);
+    }
 
     private async Task<HubConnection> CreateHubConnection(string clientName)
     {
